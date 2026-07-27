@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nickk — Trader & Crypto Content Creator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #FFFFFF;
+    --bg-raised: #F0F6FF;
+    --line: #C8DCFF;
+    --text: #0A0A0A;
+    --text-dim: #3A5F8A;
+    --purple: #3D9EFF;
+    --pink: #00C8FF;
+    --orange: #0055FF;
+    --teal: #00E5FF;
+    --yellow: #38BDF8;
+    --blue: #0055FF;
+    --grad1: linear-gradient(135deg, #0055FF, #00C8FF);
+    --grad2: linear-gradient(135deg, #3D9EFF, #60CAFF);
+    --grad3: linear-gradient(135deg, #00C8FF, #00E5FF);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;overflow-x:hidden;}
+  ::selection{background:#0055FF;color:#fff;}
+  a{color:inherit;text-decoration:none;}
+  a:focus-visible,button:focus-visible{outline:2px solid var(--pink);outline-offset:3px;}
+  @media(prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important;}}
+
+  /* ---- BACKGROUND BLOBS ---- */
+  .blobs{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+  .blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:0.08;}
+  .blob-1{width:600px;height:600px;background:#0055FF;top:-200px;left:-200px;animation:float1 14s ease-in-out infinite;}
+  .blob-2{width:500px;height:500px;background:#00C8FF;top:50%;right:-150px;animation:float2 18s ease-in-out infinite;}
+  .blob-3{width:400px;height:400px;background:#00E5FF;bottom:-100px;left:30%;animation:float3 16s ease-in-out infinite;}
+  .blob-4{width:300px;height:300px;background:#3D9EFF;top:30%;left:40%;animation:float1 20s ease-in-out infinite reverse;}
+  @keyframes float1{0%,100%{transform:translate(0,0);}50%{transform:translate(40px,-60px);}}
+  @keyframes float2{0%,100%{transform:translate(0,0);}50%{transform:translate(-50px,40px);}}
+  @keyframes float3{0%,100%{transform:translate(0,0);}50%{transform:translate(30px,50px);}}
+
+  /* ---- NAV ---- */
+  header{
+    position:fixed;top:0;left:0;right:0;z-index:50;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:18px 32px;
+    background:rgba(255,255,255,0.9);
+    backdrop-filter:blur(16px);
+    border-bottom:1px solid rgba(0,100,255,0.15);
+  }
+  .logo{
+    font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.1rem;
+    display:flex;align-items:center;gap:10px;
+    background:var(--grad1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  }
+  .nav-pfp{width:30px;height:30px;border-radius:50%;object-fit:cover;border:2px solid #3D9EFF;-webkit-text-fill-color:initial;}
+  nav.links{display:flex;gap:28px;font-size:0.88rem;font-weight:700;font-family:'Space Grotesk',sans-serif;}
+  nav.links a{color:#3A5F8A;transition:color .2s;}
+  nav.links a:hover{opacity:0.7;}
+  @media(max-width:660px){nav.links{display:none;}}
+
+  /* ---- TICKER ---- */
+  .ticker-wrap{
+    margin-top:65px;
+    overflow:hidden;white-space:nowrap;padding:12px 0;
+    background:linear-gradient(90deg,#0055FF11,#3D9EFF11,#00C8FF11,#00E5FF11,#38BDF811,#0055FF11);
+    border-top:1px solid rgba(0,100,255,0.1);
+    border-bottom:1px solid rgba(0,100,255,0.1);
+  }
+  .ticker{display:inline-flex;animation:scroll 32s linear infinite;}
+  .ticker span{
+    font-family:'IBM Plex Mono',monospace;font-size:0.78rem;
+    padding:0 22px;border-right:1px solid rgba(0,100,255,0.15);
+    color:#3A5F8A;
+  }
+  .ticker span.a{color:var(--purple);}
+  .ticker span.b{color:var(--pink);}
+  .ticker span.c{color:var(--orange);}
+  .ticker span.d{color:var(--teal);}
+  .ticker span.e{color:var(--yellow);}
+  @keyframes scroll{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+
+  /* ---- HERO ---- */
+  .hero{
+    position:relative;z-index:1;
+    padding:110px 32px 90px;
+    max-width:1100px;margin:0 auto;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;font-size:0.78rem;letter-spacing:0.1em;
+    margin-bottom:22px;display:flex;align-items:center;gap:10px;
+    background:var(--grad1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  }
+  .eyebrow::before{
+    content:'';width:8px;height:8px;border-radius:50%;
+    background:var(--teal);-webkit-background-clip:initial;-webkit-text-fill-color:initial;
+    box-shadow:0 0 0 0 rgba(0,200,255,0.6);animation:pulse 2s infinite;flex-shrink:0;
+  }
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(0,200,255,0.5);}70%{box-shadow:0 0 0 10px rgba(0,200,255,0);}100%{box-shadow:0 0 0 0 rgba(0,200,255,0);}}
+  h1.display{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:clamp(2.6rem,6.5vw,5rem);
+    line-height:1.03;font-weight:700;letter-spacing:-0.02em;max-width:900px;
+  }
+  h1.display .g1{background:var(--grad1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  h1.display .g2{background:var(--grad2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  h1.display .g3{background:var(--grad3);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  .hero-sub{
+    margin-top:28px;font-size:1.1rem;color:#444;max-width:540px;line-height:1.7;
+  }
+  .hero-actions{margin-top:38px;display:flex;gap:14px;flex-wrap:wrap;}
+  .btn{
+    font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:0.92rem;
+    padding:14px 26px;border-radius:6px;
+    transition:transform .15s,box-shadow .2s;
+    display:inline-flex;align-items:center;gap:8px;
+    position:relative;overflow:hidden;
+  }
+  .btn-primary{background:var(--grad1);color:#fff;}
+  .btn-primary:hover{transform:translateY(-2px);}
+  .btn-ghost{border:1px solid rgba(0,100,255,0.3);color:#0A0A0A;background:rgba(0,100,255,0.04);}
+  .btn-ghost:hover{transform:translateY(-2px);}
+
+  /* animated chart */
+  .chart-line{position:absolute;right:-3%;top:8%;width:52%;max-width:620px;opacity:0.85;pointer-events:none;}
+  .chart-line path{fill:none;stroke-width:2;stroke-linecap:round;stroke-dasharray:1000;stroke-dashoffset:1000;animation:draw 2.4s ease-out forwards;}
+  .chart-line .c1{stroke:url(#cgrad);animation-delay:0.1s;}
+  .chart-line .glow{stroke:#00C8FF;opacity:0.3;stroke-width:7;filter:blur(4px);}
+  @keyframes draw{to{stroke-dashoffset:0;}}
+  @media(max-width:900px){.chart-line{display:none;}}
+
+  /* ---- SECTION SHELL ---- */
+  .section{max-width:1100px;margin:0 auto;padding:90px 32px;position:relative;z-index:1;}
+  .section-divider{
+    width:100%;height:1px;
+    background:linear-gradient(90deg,transparent,#0055FF,#3D9EFF,#00E5FF,transparent);
+    opacity:0.3;margin:0 auto;
+  }
+  .section-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:52px;flex-wrap:wrap;gap:12px;}
+  .section-head h2{
+    font-family:'Space Grotesk',sans-serif;font-size:clamp(1.8rem,3vw,2.4rem);font-weight:700;
+    background:var(--grad1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  }
+  .section-head .meta{font-family:'IBM Plex Mono',monospace;color:#3A5F8A;font-size:0.82rem;}
+
+  /* ---- TRADE LOG ---- */
+  .log{border-radius:12px;overflow:hidden;border:1px solid rgba(0,100,255,0.2);}
+  .log-row{
+    display:grid;grid-template-columns:110px 1.4fr 1.6fr 95px;
+    gap:20px;align-items:center;padding:22px 24px;
+    border-bottom:1px solid rgba(0,100,255,0.08);
+    background:#FFFFFF;
+    transition:background .2s;
+  }
+  .log-row:last-child{border-bottom:none;}
+  .log-row:hover{background:#F5F9FF;}
+  .log-row .dur{font-family:'IBM Plex Mono',monospace;color:#3A5F8A;font-size:0.78rem;}
+  .log-row .proj{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:1.05rem;color:#0A0A0A;}
+  .log-row .proj .role{
+    display:block;font-family:'Inter',sans-serif;font-weight:400;font-size:0.83rem;margin-top:5px;
+    background:var(--grad2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  }
+  .log-row .result{font-size:0.9rem;color:#444;line-height:1.6;}
+  .status{
+    font-family:'IBM Plex Mono',monospace;font-size:0.7rem;letter-spacing:0.05em;
+    padding:5px 10px;border-radius:4px;text-align:center;white-space:nowrap;justify-self:end;
+    background:rgba(0,200,255,0.1);color:#00C8FF;border:1px solid rgba(0,200,255,0.3);
+  }
+  .status.win{background:rgba(0,85,255,0.2);color:#60CAFF;border-color:rgba(61,158,255,0.5);}
+  @media(max-width:760px){.log-row{grid-template-columns:1fr;gap:8px;}.status{justify-self:start;}}
+
+  /* ---- REVIEWS ---- */
+  .reviews-grid{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:20px;
+  }
+  @media(max-width:900px){.reviews-grid{grid-template-columns:1fr 1fr;}}
+  @media(max-width:560px){.reviews-grid{grid-template-columns:1fr;}}
+  .review-card{
+    border-radius:12px;padding:28px;position:relative;overflow:hidden;
+    border:1px solid rgba(0,100,255,0.12);
+    background:#FFFFFF;
+    transition:transform .2s;
+  }
+  .review-card:hover{transform:translateY(-4px);}
+  .review-card::before{
+    content:'';position:absolute;inset:0;opacity:0.08;border-radius:12px;
+  }
+  .rc-1::before{background:var(--grad1);}
+  .rc-2::before{background:var(--grad2);}
+  .rc-3::before{background:var(--grad3);}
+  .rc-4::before{background:linear-gradient(135deg,#3D9EFF,#00E5FF);}
+  .rc-5::before{background:linear-gradient(135deg,#00C8FF,#0055FF);}
+  .rc-6::before{background:linear-gradient(135deg,#38BDF8,#3D9EFF);}
+  .stars{font-size:1rem;letter-spacing:2px;margin-bottom:14px;}
+  .rc-1 .stars,.rc-5 .stars{color:#3D9EFF;}
+  .rc-2 .stars,.rc-6 .stars{color:#38BDF8;}
+  .rc-3 .stars{color:#00E5FF;}
+  .rc-4 .stars{color:#00C8FF;}
+  .quote{font-size:0.95rem;line-height:1.7;color:#333;position:relative;z-index:1;}
+  .quote::before{
+    content:'\201C';font-size:3.5rem;line-height:0.5;color:rgba(0,85,255,0.1);
+    font-family:'Space Grotesk',sans-serif;display:block;margin-bottom:10px;
+  }
+  .reviewer{margin-top:20px;display:flex;align-items:center;gap:10px;position:relative;z-index:1;}
+  .reviewer-avatar{
+    width:36px;height:36px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:0.85rem;color:#fff;
+    flex-shrink:0;
+  }
+  .av-1{background:linear-gradient(135deg,#0055FF,#00C8FF);}
+  .av-2{background:linear-gradient(135deg,#3D9EFF,#38BDF8);}
+  .av-3{background:linear-gradient(135deg,#00C8FF,#00E5FF);}
+  .av-4{background:linear-gradient(135deg,#3D9EFF,#00E5FF);}
+  .av-5{background:linear-gradient(135deg,#00C8FF,#0055FF);}
+  .av-6{background:linear-gradient(135deg,#38BDF8,#3D9EFF);}
+  .reviewer-name{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:0.9rem;}
+  .reviewer-title{font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:#3A5F8A;}
+
+  /* ---- ABOUT ---- */
+  .about-grid{display:grid;grid-template-columns:0.8fr 1.1fr 0.9fr;gap:60px;align-items:start;}
+  .pfp-wrap{position:relative;}
+  .pfp-wrap img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:12px;display:block;border:2px solid transparent;background-clip:padding-box;}
+  .pfp-border{
+    position:absolute;inset:-2px;border-radius:14px;
+    background:var(--grad1);z-index:-1;
+  }
+  .pfp-tag{
+    position:absolute;bottom:12px;left:12px;
+    background:rgba(255,255,255,0.92);
+    border:1px solid #3D9EFF;
+    color:#3D9EFF;
+    font-family:'IBM Plex Mono',monospace;font-size:0.7rem;
+    padding:5px 10px;border-radius:4px;letter-spacing:0.04em;
+  }
+  @media(max-width:980px){.about-grid{grid-template-columns:1fr;}.pfp-wrap{max-width:260px;}}
+  .about-grid p{color:#333;line-height:1.8;font-size:1.02rem;margin-bottom:18px;}
+  .stat-card{
+    border-radius:10px;padding:24px;
+    border:1px solid rgba(0,100,255,0.15);
+    background:#F5F9FF;
+    position:relative;overflow:hidden;
+    transition:transform .2s;
+  }
+  .stat-card:hover{transform:translateY(-3px);}
+  .stat-card + .stat-card{margin-top:14px;}
+  .stat-card::after{content:'';position:absolute;inset:0;opacity:0.08;}
+  .sc-1::after{background:var(--grad1);}
+  .sc-2::after{background:var(--grad2);}
+  .sc-3::after{background:var(--grad3);}
+  .stat-card .num{
+    font-family:'Space Grotesk',sans-serif;font-size:2.2rem;font-weight:700;position:relative;z-index:1;
+  }
+  .sc-1 .num{background:var(--grad1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  .sc-2 .num{background:var(--grad2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  .sc-3 .num{background:var(--grad3);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  .stat-card .label{font-family:'IBM Plex Mono',monospace;font-size:0.75rem;color:var(--text-dim);margin-top:5px;position:relative;z-index:1;}
+
+  /* ---- CONTACT ---- */
+  .contact-section{
+    padding:90px 32px;
+    background:linear-gradient(135deg,rgba(0,85,255,0.04),rgba(0,200,255,0.03),rgba(56,189,248,0.03));
+    border-top:1px solid rgba(0,100,255,0.12);
+    border-bottom:1px solid rgba(0,100,255,0.12);
+    text-align:center;
+    position:relative;z-index:1;
+  }
+  .contact-section h2{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:clamp(2rem,5vw,3.4rem);font-weight:700;line-height:1.1;
+    background:var(--grad1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+    max-width:700px;margin:0 auto;
+  }
+  .contact-section .sub{color:#3A5F8A;margin-top:18px;font-size:1.05rem;}
+  .contact-links{margin-top:40px;display:flex;gap:16px;flex-wrap:wrap;justify-content:center;}
+  .clink{
+    border:1px solid rgba(0,100,255,0.25);padding:16px 28px;border-radius:8px;
+    display:flex;align-items:center;gap:10px;
+    font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:0.95rem;
+    background:#F0F6FF;color:#0A0A0A;
+    transition:border-color .2s,transform .15s,box-shadow .2s;
+  }
+  .clink:hover{transform:translateY(-3px);}
+  .clink .handle{font-family:'IBM Plex Mono',monospace;font-size:0.78rem;color:var(--text-dim);}
+  .clink:hover .handle{}
+
+  footer{
+    padding:28px 32px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
+    font-family:'IBM Plex Mono',monospace;font-size:0.75rem;color:#3A5F8A;
+    max-width:1100px;margin:0 auto;position:relative;z-index:1;
+  }
+</style>
+</head>
+<body>
+
+<div class="blobs" aria-hidden="true">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+  <div class="blob blob-4"></div>
+</div>
+
+<header>
+  <div class="logo">
+    <img src="assets/pfp.jpeg" alt="" class="nav-pfp">
+    NICKK
+  </div>
+  <nav class="links">
+    <a href="#log">Trade Log</a>
+    <a href="#reviews">Reviews</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<div class="ticker-wrap" aria-hidden="true">
+  <div class="ticker">
+    <span class="a">AVAGOLD · AMBASSADOR · 2MO</span>
+    <span class="b">ROAR LION NFT · SOLD OUT ▲</span>
+    <span class="c">ROAR COIN · CONTENT MARKETER</span>
+    <span class="d">ALIEN NFT · CONTENT CREATOR</span>
+    <span class="e">PROP FIRM AFFILIATE · 3MO ▲</span>
+    <span class="a">CRYPTO FUND · AFFILIATE</span>
+    <span class="b">KOL · MULTI-AGENCY</span>
+    <span class="a">AVAGOLD · AMBASSADOR · 2MO</span>
+    <span class="b">ROAR LION NFT · SOLD OUT ▲</span>
+    <span class="c">ROAR COIN · CONTENT MARKETER</span>
+    <span class="d">ALIEN NFT · CONTENT CREATOR</span>
+    <span class="e">PROP FIRM AFFILIATE · 3MO ▲</span>
+    <span class="a">CRYPTO FUND · AFFILIATE</span>
+    <span class="b">KOL · MULTI-AGENCY</span>
+  </div>
+</div>
+
+<section class="hero">
+  <svg class="chart-line" viewBox="0 0 500 220" aria-hidden="true">
+    <defs>
+      <linearGradient id="cgrad" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#0055FF"/>
+        <stop offset="50%" stop-color="#3D9EFF"/>
+        <stop offset="100%" stop-color="#00E5FF"/>
+      </linearGradient>
+    </defs>
+    <path class="glow" d="M0,160 L40,150 L80,170 L120,110 L160,130 L200,70 L240,90 L280,50 L320,65 L360,30 L400,40 L440,15 L500,25"/>
+    <path class="c1" d="M0,160 L40,150 L80,170 L120,110 L160,130 L200,70 L240,90 L280,50 L320,65 L360,30 L400,40 L440,15 L500,25"/>
+  </svg>
+
+  <div class="eyebrow">TRADER &amp; CRYPTO CONTENT CREATOR</div>
+  <h1 class="display">
+    <span class="g1">Six campaigns.</span><br>
+    <span class="g2">One sold-out launch.</span><br>
+    <span class="g3">Zero noise.</span>
+  </h1>
+  <p class="hero-sub">I'm Nickk — I build trust between crypto projects and the people who trade them. Ambassador work, community growth, content, and affiliate partnerships across the trading and NFT space.</p>
+  <div class="hero-actions">
+    <a class="btn btn-primary" href="#contact">Work with me</a>
+    <a class="btn btn-ghost" href="#log">View trade log ↓</a>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<section class="section" id="log">
+  <div class="section-head">
+    <h2>Trade Log</h2>
+    <span class="meta">7 POSITIONS · ALL CLOSED</span>
+  </div>
+  <div class="log">
+    <div class="log-row">
+      <span class="dur">2 MO</span>
+      <span class="proj">Avagold<span class="role">Brand Ambassador</span></span>
+      <span class="result">Represented Avagold across community and content channels, driving visibility for the token during a focused 2-month push.</span>
+      <span class="status">CLOSED</span>
+    </div>
+    <div class="log-row">
+      <span class="dur">5 MO</span>
+      <span class="proj">Roar Lion NFT<span class="role">Community Manager &amp; Project Advisor</span></span>
+      <span class="result">Built and grew the community from the ground up and advised on go-to-market strategy. The collection sold out.</span>
+      <span class="status win">SOLD OUT ▲</span>
+    </div>
+    <div class="log-row">
+      <span class="dur">ONGOING</span>
+      <span class="proj">Marketing Agencies<span class="role">Key Opinion Leader (KOL)</span></span>
+      <span class="result">Paid KOL for multiple crypto marketing agencies, amplifying token and NFT launches to my audience.</span>
+      <span class="status">CLOSED</span>
+    </div>
+    <div class="log-row">
+      <span class="dur">CONTRACT</span>
+      <span class="proj">Roar Coin<span class="role">Content Marketer</span></span>
+      <span class="result">Produced content strategy and marketing assets supporting the Roar token launch and audience growth.</span>
+      <span class="status">CLOSED</span>
+    </div>
+    <div class="log-row">
+      <span class="dur">CONTRACT</span>
+      <span class="proj">Alien NFT<span class="role">Content Creator</span></span>
+      <span class="result">Created content driving visibility and hype for the Alien NFT collection across socials.</span>
+      <span class="status">CLOSED</span>
+    </div>
+    <div class="log-row">
+      <span class="dur">3 MO</span>
+      <span class="proj">Upscale Prop Firm<span class="role">Affiliate Partner</span></span>
+      <span class="result">Referred and onboarded traders to a premium proprietary trading firm over a 3-month partnership.</span>
+      <span class="status">CLOSED</span>
+    </div>
+    <div class="log-row">
+      <span class="dur">2 WKS</span>
+      <span class="proj">Crypto Fund<span class="role">Content Marketing</span></span>
+      <span class="result">Delivered a focused 2-week content marketing campaign for a crypto fund trader, creating assets to drive awareness and investor interest.</span>
+      <span class="status">CLOSED</span>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ---- REVIEWS ---- -->
+<section class="section" id="reviews">
+  <div class="section-head">
+    <h2>Reviews</h2>
+    <span class="meta">FROM PAST PARTNERS</span>
+  </div>
+  <div class="reviews-grid">
+
+    <div class="review-card rc-1">
+      <div class="stars">★★★★★</div>
+      <p class="quote">Nickk brought genuine credibility to our ambassador campaign. He didn't just post — he understood the product and talked about it like a real trader. Our community trusted it because he did.</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar av-1">AG</div>
+        <div>
+          <div class="reviewer-name">Avagold Team</div>
+          <div class="reviewer-title">BRAND AMBASSADOR CAMPAIGN</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="review-card rc-2">
+      <div class="stars">★★★★★</div>
+      <p class="quote">We brought Nickk in to manage community and advise on strategy — within weeks the energy completely shifted. He kept the holders engaged, helped us navigate key decisions, and we sold out.</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar av-2">RL</div>
+        <div>
+          <div class="reviewer-name">Roar Lion NFT</div>
+          <div class="reviewer-title">COMMUNITY MANAGER &amp; ADVISOR</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="review-card rc-3">
+      <div class="stars">★★★★★</div>
+      <p class="quote">Working with Nickk as a KOL was seamless. He knows his audience, doesn't oversell, and the engagement on his posts outperformed most of the other influencers we worked with by a wide margin.</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar av-3">MK</div>
+        <div>
+          <div class="reviewer-name">Marketing Agency</div>
+          <div class="reviewer-title">KOL PARTNERSHIP</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="review-card rc-4">
+      <div class="stars">★★★★★</div>
+      <p class="quote">Nickk's content for Roar Coin was sharp, on-brand, and converted. He understood the tokenomics, which meant the content actually made sense to traders — not just hype, real substance.</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar av-4">RC</div>
+        <div>
+          <div class="reviewer-name">Roar Coin</div>
+          <div class="reviewer-title">CONTENT MARKETING</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="review-card rc-5">
+      <div class="stars">★★★★★</div>
+      <p class="quote">Nickk's affiliate work brought us quality traders — not just clicks. His referrals actually converted and stayed active. The kind of affiliate partner you want to keep long term.</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar av-5">PF</div>
+        <div>
+          <div class="reviewer-name">Upscale Prop Firm</div>
+          <div class="reviewer-title">AFFILIATE PARTNER</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="review-card rc-6">
+      <div class="stars">★★★★★</div>
+      <p class="quote">Reliable, professional, and he actually drives results. Nickk's been one of our most consistent affiliates — his audience is genuinely interested in trading and it shows in the numbers.</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar av-6">CF</div>
+        <div>
+          <div class="reviewer-name">Crypto Fund Trader</div>
+          <div class="reviewer-title">AFFILIATE PROGRAM</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ---- ABOUT ---- -->
+<section class="section" id="about">
+  <div class="section-head">
+    <h2>About</h2>
+    <span class="meta">PROFILE</span>
+  </div>
+  <div class="about-grid">
+    <div class="pfp-wrap">
+      <div class="pfp-border"></div>
+      <img src="assets/pfp.jpeg" alt="Nickk, portrait illustration" loading="lazy">
+      <span class="pfp-tag">@timon_nick</span>
+    </div>
+    <div>
+      <p>I trade and I create — and most of my work sits at the intersection of the two. Projects bring me in when they need someone who actually understands markets, can talk to a community like a person, and turn that into content that performs.</p>
+      <p>Over the last couple of years that's meant running community for an NFT collection through to sellout, fronting campaigns as an ambassador and KOL, and building longer affiliate relationships with a prop firm and a crypto fund — the kind of partnerships that only last because the numbers hold up.</p>
+      <p>If you're a project, agency, or firm that needs someone credible in front of a crypto-native audience, that's the work I do.</p>
+    </div>
+    <div>
+      <div class="stat-card sc-1">
+        <div class="num">7</div>
+        <div class="label">PROJECTS &amp; PARTNERSHIPS</div>
+      </div>
+      <div class="stat-card sc-2">
+        <div class="num">1</div>
+        <div class="label">SOLD-OUT NFT LAUNCH</div>
+      </div>
+      <div class="stat-card sc-3">
+        <div class="num">5MO</div>
+        <div class="label">LONGEST ENGAGEMENT</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ---- CONTACT ---- -->
+<div class="contact-section" id="contact">
+  <h2>Got a project that needs a trusted voice in the room?</h2>
+  <p class="sub">DM me on X or Telegram — that's where deals actually get done.</p>
+  <div class="contact-links">
+    <a class="clink" href="https://x.com/timon_nick" target="_blank" rel="noopener">
+      𝕏 / Twitter <span class="handle">@timon_nick</span>
+    </a>
+    <a class="clink" href="https://t.me/NicholasTimon" target="_blank" rel="noopener">
+      Telegram <span class="handle">@NicholasTimon</span>
+    </a>
+  </div>
+</div>
+
+<footer>
+  <span>NICKK PORTFOLIO</span>
+  <span>© 2026</span>
+</footer>
+
+</body>
+</html>
