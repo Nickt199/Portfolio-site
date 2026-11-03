@@ -1,0 +1,4 @@
+# Static site: no build step required. Site files live in /public.
+[build]
+  publish = "public"
+  command = "echo 'No build step required'"
